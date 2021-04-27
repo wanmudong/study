@@ -3,7 +3,7 @@
 
 ## 已学习
 
-##mq
+### mq
 RocketMQ 技术内幕
 
 ### jvm
