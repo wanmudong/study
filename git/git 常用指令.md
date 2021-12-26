@@ -9,13 +9,13 @@ git config --global
 
 git config --list
 
-git mv fileName  fileNewName
+git mv fileName  fileNewName 在git中重命名文件
 
 git log
 -- oneline
 -- n10
 -- all
--- graph 
+-- graph  图像化git log
 
 git help git https://git.github.io/htmldocs/git.html
 ```
