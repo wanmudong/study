@@ -74,3 +74,71 @@ Setter方法注入
 - 对非延迟bean进行延迟注入操作
   - ObjectProvider（可以获取单一类型以及集合类型）
   - ObjectFactory（可以获取单一类型以及集合类型）
+
+
+
+
+
+14、依赖处理过程：在使用@Autowire时发送了什么事情？
+
+DefaultListableBeanFactory#resolveDependency 看这个方法，可以打断点测试。
+
+在该方法中会处理依赖注入，内部会区分懒加载、集合类型注入、bean注入等。
+
+本质上是将@Autowire转换为DependencyDescriptor（依赖描述符），即先确认我需要什么样的依赖，然后找到需要的依赖，进行注入。
+
+而AutowireCandidateResolver则是待注入的候选对象。
+
+
+
+15、@Autowire 怎么将bean进行注入的？
+
+AutowiredAnnotationBeanPostProcessor
+
+- postProcessMergedBeanDefinition:先找到bean的元数据，进行构建元数据的操作。（merged？合并双亲bean）
+- postProcessProperties:依据构建的元数据，来进行依赖的注入，其中注入过程中就有（14）提到的依赖处理过程
+
+
+
+16、@Inject 注解用法与@Autowire一致。
+
+过程也在AutowiredAnnotationBeanPostProcessor
+
+
+
+17、Java 通用注解注入原理
+
+CommonAnnotationBeanPostProcessor 与AutowiredAnnotationBeanPostProcessor的实现基本一致。相较于后者多了bean 的生命周期的处理（基于PostConstruct以及PreDestroy），实现生命周期的回调。
+
+- javax.xml.ws.WebServiceRef 
+-  javax.ejb.EJB 
+- javax.annotation.Resource
+
+ 生命周期注解
+
+- javax.annotation.PostConstruct 
+- javax.annotation.PreDestroy
+
+
+
+
+
+18、自定义依赖注入注解
+
+实现方式
+
+- 在自定义的注解上标注@Autowire
+- 使用AutowiredAnnotationBeanPostProcessor
+
+
+
+注意：通过@Bean 声明statis bean时，bean会提早初始化。
+
+
+
+
+
+小结：
+
+- spring 依赖注入的方式：四种
+
